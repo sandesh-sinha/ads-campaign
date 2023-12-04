@@ -1,0 +1,30 @@
+.sequence {
+  display: block;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 100;
+  background-color: black;
+}
+
+.sequence-element {
+  display: none;
+}
+
+.sequence-element.active {
+  display: block;
+}
+
+.sequence-element-img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  background-size: cover;
+  overflow: hidden;
+}

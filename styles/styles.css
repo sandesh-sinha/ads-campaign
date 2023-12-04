@@ -217,22 +217,22 @@ main img {
   width: 100%;
 }
 
-main .section {
+/* main .section {
   padding: 64px 16px;
-}
+} */
 
-@media (min-width: 600px) {
+/* @media (min-width: 600px) {
   main .section {
     padding: 64px 32px;
   }
-}
+} */
 
-@media (min-width: 900px) {
+/* @media (min-width: 900px) {
   .section > div {
     max-width: 1200px;
     margin: auto;
   }
-}
+} */
 
 /* section metadata */
 main .section.highlight {
