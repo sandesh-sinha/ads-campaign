@@ -16,6 +16,7 @@ export default async function decorate(block) {
     campaignElement.classList.add('campaign');
     campaignElement.setAttribute('data-customer', campaign.customer);
     campaignElement.setAttribute('data-allotedslots', campaign.alottedSlots);
+    campaignElement.setAttribute('data-id', campaign.id);
     campaign.assets.forEach((asset) => {
       const sequenceElement = document.createElement('div');
       sequenceElement.classList.add('sequence-element', 'fadeIn');
