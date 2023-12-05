@@ -1,0 +1,27 @@
+{
+  "version": "3.0",
+  "timestamp": 1701784418000,
+  "entries": [
+    {
+      "path": "/content/screens/locations/us/sanjose.html",
+      "timestamp": 1701784418000
+    },
+    {
+      "path": "/scripts/scripts.js",
+      "timestamp": 1701682199000
+    },
+    {
+      "path": "/styles/styles.css",
+      "timestamp": 1701702028000
+    }
+  ],
+  "contentDelivery": {
+    "providers": [
+      {
+        "name": "franklin",
+        "endpoint": "/"
+      }
+    ],
+    "defaultProvider": "franklin"
+  }
+}
