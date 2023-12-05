@@ -57,6 +57,75 @@ function deactivateCurrentCampaign(campaign) {
   }
 }
 
+function checkCampaignActivation(campaign) {
+  const startDate = Number(campaign.dataset.startdate);
+  const endDate = Number(campaign.dataset.enddate);
+  const currentDate = (new Date()).getTime();
+  const isActive = ((currentDate >= (new Date(startDate)).getTime()) && (currentDate <= (new Date(endDate)).getTime()));
+  console.log(campaign, currentDate >= (new Date(startDate)).getTime(),currentDate <= (new Date(endDate)).getTime());
+  return isActive;
+}
+
+function increment(currentCampaign, sequence) {
+  let index = currentCampaign;
+  index += 1;
+  if (index === sequence.childElementCount) {
+    index = 0;
+  }
+  return index;
+}
+
+function handlePreviousCampaign(sequence) {
+  // handle previous campaign
+  const campaign = sequence.children[currentCampaign];
+  clearTimeout(assetTimeout);
+  campaign.dataset.nextplay = currentAsset;
+  deactivateCurrentCampaign(campaign);
+}
+
+function handleNextCampaign(sequence) {
+  // handle next campaign
+  const activeCampaigns = Array.from(sequence.children).filter((campaignElem) => checkCampaignActivation(campaignElem));
+  if (activeCampaigns.length === 0) {
+    console.log('no active campaigns');
+    return;
+  }
+  let targetCampaignIndex = increment(currentCampaign, sequence);
+  let campaignRetrieved = false;
+  Array.from(sequence.children).splice(targetCampaignIndex).every((campaignElem) => {
+    if (checkCampaignActivation(campaignElem)) {
+      campaignRetrieved = true;
+      return false;
+    }
+    targetCampaignIndex = increment(targetCampaignIndex, sequence);
+    return true;
+  })
+  if (!campaignRetrieved) {
+    Array.from(sequence.children).splice(0, targetCampaignIndex).every((campaignElem) => {
+      if (checkCampaignActivation(campaignElem)) {
+        campaignRetrieved = true;
+        return false;
+      }
+      targetCampaignIndex = increment(targetCampaignIndex, sequence);
+      return true;
+    })
+  }
+  if (!campaignRetrieved) {
+    console.log('unable to find active campaigns');
+    return;
+  }
+  console.log('activating next campaign', currentCampaign, ' to ', targetCampaignIndex);
+  currentCampaign = targetCampaignIndex;
+  activateNextCampaign(sequence);
+}
+
+function handleCampaignTransition(sequence) {
+  // handle previous campaign
+  handlePreviousCampaign(sequence);
+  // handle next campaign
+  handleNextCampaign(sequence);
+}
+
 function handleAssetTransition(sequence, leftSlots) {
   const campaign = sequence.children[currentCampaign];
   deactivateCurrentAsset(campaign.children[currentAsset]);
@@ -81,15 +150,9 @@ function handleAssetTransition(sequence, leftSlots) {
     currentAsset = 0;
   }
   leftSlots -= 1;
-  if (leftSlots === 0) {
-    clearTimeout(assetTimeout);
-    campaign.dataset.nextplay = currentAsset;
-    deactivateCurrentCampaign(campaign);
-    currentCampaign += 1;
-    if (currentCampaign === sequence.childElementCount) {
-      currentCampaign = 0;
-    }
-    activateNextCampaign(sequence);
+  const isactive = checkCampaignActivation(campaign);
+  if (leftSlots === 0 || !isactive) {
+    handleCampaignTransition(sequence);
     return;
   }
   activateNextAsset(campaign.children[currentAsset]);
@@ -114,8 +177,8 @@ function startCarousel() {
     return;
   }
   const sequence = carousels[0];
-  currentCampaign = 0;
-  activateNextCampaign(sequence);
+  currentCampaign = -1;
+  handleNextCampaign(sequence);
 }
 
 startCarousel();
