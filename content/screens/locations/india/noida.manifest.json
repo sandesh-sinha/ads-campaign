@@ -13,6 +13,34 @@
     {
       "path": "/styles/styles.css",
       "timestamp": 1701702028000
+    },
+    {
+      "path": "/styles/lazy-styles.css",
+      "timestamp": 1701682200000
+    },
+    {
+      "path": "/scripts/delayed.js",
+      "timestamp": 1701780033000
+    },
+    {
+      "path": "/scripts/lib-franklin.js",
+      "timestamp": 1701682199000
+    },
+    {
+      "path": "scripts/scripts.js",
+      "timestamp": 1701682199000
+    },
+    {
+      "path": "styles/styles.css",
+      "timestamp": 1701702028000
+    },
+    {
+      "path": "/blocks/campaign/campaign.css",
+      "timestamp": 1701702028000
+    },
+    {
+      "path": "/blocks/campaign/campaign.js",
+      "timestamp": 1701780033000
     }
   ],
   "contentDelivery": {
