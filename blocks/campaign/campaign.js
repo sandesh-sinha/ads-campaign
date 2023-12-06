@@ -5,7 +5,7 @@ const fetchCampaigns = async (store) => {
 }
 
 export default async function decorate(block) {
-  const store = location.href.split('/')[location.href.split('/').length - 1];
+  const store = location.href.split('/')[location.href.split('/').length - 1].split('.')[0];
   const campaigns = await fetchCampaigns(store);
   const carouselElements = [...block.children];
   const sequence = document.createElement('div');
