@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "timestamp": 1701784418000,
+  "timestamp": 1701869238000,
   "entries": [
     {
       "path": "/content/screens/locations/us/sanjose.html",
@@ -40,7 +40,7 @@
     },
     {
       "path": "/blocks/campaign/campaign.js",
-      "timestamp": 1701780033000
+      "timestamp": 1701869238000
     }
   ],
   "contentDelivery": {
