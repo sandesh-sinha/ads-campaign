@@ -136,7 +136,7 @@ function handleAssetTransition(sequence, leftSlots) {
   const duration = ((new Date(assetDeactivateTime)).getTime()
     - (new Date(assetActivateTime)).getTime());
   sendAnalyticsEvent({
-    type: 'play',
+    type: 'campaign',
     start: assetActivateTime,
     end: assetDeactivateTime,
     value: assetId,
