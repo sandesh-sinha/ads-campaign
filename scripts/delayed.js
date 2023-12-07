@@ -6,30 +6,29 @@ sampleRUM('cwv');
 
 // add more delayed functionality here
 
-export function sendAnalyticsEvent(capturedData) {
+function sendAnalyticsEvent(capturedData) {
   const data = {
     'event.type': capturedData.type,
     'event.coll_dts': capturedData.start,
     'event.dts_start': capturedData.start,
     'content.type': capturedData.contentType,
     'content.action': capturedData.action,
-    'trn.product': capturedData.action,
+    'trn.product': capturedData.product,
     'trn.amount': capturedData.amount,
     'event.dts_end': capturedData.end,
     'event.count': capturedData.count,
     'event.value': capturedData.value,
     'trn.quantity': capturedData.quantity,
-    'event.subtype': capturedData.subType
+    'event.subtype': capturedData.subType,
   };
   console.log(data);
   window.parent.postMessage(JSON.stringify({
     namespace: 'screens-player',
     type: 'analytics-tracking-event',
     data,
-  }),"*");
+  }), '*');
 }
 
-let campaignTimeout;
 let currentCampaign = 0;
 let assetTimeout = 0;
 const DURATION = 5000;
@@ -61,13 +60,13 @@ function checkCampaignActivation(campaign) {
   const startDate = Number(campaign.dataset.startdate);
   const endDate = Number(campaign.dataset.enddate);
   const currentDate = (new Date()).getTime();
-  const isActive = ((currentDate >= (new Date(startDate)).getTime()) && (currentDate <= (new Date(endDate)).getTime()));
-  console.log(campaign, currentDate >= (new Date(startDate)).getTime(),currentDate <= (new Date(endDate)).getTime());
+  const isActive = ((currentDate >= (new Date(startDate)).getTime())
+    && (currentDate <= (new Date(endDate)).getTime()));
   return isActive;
 }
 
-function increment(currentCampaign, sequence) {
-  let index = currentCampaign;
+function increment(previousIndex, sequence) {
+  let index = previousIndex;
   index += 1;
   if (index === sequence.childElementCount) {
     index = 0;
@@ -85,7 +84,8 @@ function handlePreviousCampaign(sequence) {
 
 function handleNextCampaign(sequence) {
   // handle next campaign
-  const activeCampaigns = Array.from(sequence.children).filter((campaignElem) => checkCampaignActivation(campaignElem));
+  const activeCampaigns = Array.from(sequence.children)
+    .filter((campaignElem) => checkCampaignActivation(campaignElem));
   if (activeCampaigns.length === 0) {
     console.log('no active campaigns');
     return;
@@ -99,7 +99,7 @@ function handleNextCampaign(sequence) {
     }
     targetCampaignIndex = increment(targetCampaignIndex, sequence);
     return true;
-  })
+  });
   if (!campaignRetrieved) {
     Array.from(sequence.children).splice(0, targetCampaignIndex).every((campaignElem) => {
       if (checkCampaignActivation(campaignElem)) {
@@ -108,7 +108,7 @@ function handleNextCampaign(sequence) {
       }
       targetCampaignIndex = increment(targetCampaignIndex, sequence);
       return true;
-    })
+    });
   }
   if (!campaignRetrieved) {
     console.log('unable to find active campaigns');
@@ -116,6 +116,7 @@ function handleNextCampaign(sequence) {
   }
   console.log('activating next campaign', currentCampaign, ' to ', targetCampaignIndex);
   currentCampaign = targetCampaignIndex;
+  // eslint-disable-next-line no-use-before-define
   activateNextCampaign(sequence);
 }
 
@@ -132,39 +133,41 @@ function handleAssetTransition(sequence, leftSlots) {
   assetDeactivateTime = (new Date()).toISOString();
   const assetURL = campaign.children[currentAsset].children[0].src;
   const assetId = assetURL.split('/')[assetURL.split('/').length - 1];
-  const duration = ((new Date(assetDeactivateTime)).getTime() - (new Date(assetActivateTime)).getTime());
+  const duration = ((new Date(assetDeactivateTime)).getTime()
+    - (new Date(assetActivateTime)).getTime());
   sendAnalyticsEvent({
     type: 'play',
     start: assetActivateTime,
     end: assetDeactivateTime,
-    value: 'Played asset with id ' + assetId + ' for ' + duration + 'ms' + ' in campaign ' + campaign.dataset.id + ' for customer ' + campaign.dataset.customer,
+    value: assetId,
     action: 'play',
     quantity: duration,
-    contentType: 'Image',
+    contentType: campaign.dataset.id,
+    product: campaign.dataset.customer,
     count: 1,
     subType: 'end',
-    amount: 0
+    amount: 0,
   });
   currentAsset += 1;
   if (currentAsset === campaign.childElementCount) {
     currentAsset = 0;
   }
-  leftSlots -= 1;
+  const updatedLeftSlots = leftSlots - 1;
   const isactive = checkCampaignActivation(campaign);
   if (leftSlots === 0 || !isactive) {
     handleCampaignTransition(sequence);
     return;
   }
   activateNextAsset(campaign.children[currentAsset]);
-  assetTimeout = setTimeout(handleAssetTransition, DURATION, sequence, leftSlots);
+  assetTimeout = setTimeout(handleAssetTransition, DURATION, sequence, updatedLeftSlots);
 }
 
 function activateNextCampaign(sequence) {
   const campaign = sequence.children[currentCampaign];
-  const alottedslots = sequence.children[currentCampaign].dataset.allotedslots
+  const alottedslots = sequence.children[currentCampaign].dataset.allotedslots;
   if (!campaign.classList.contains('active')) {
     campaign.classList.add('active');
-    currentAsset = campaign.dataset.nextplay ? Number(campaign.dataset.nextplay) : 0 ;
+    currentAsset = campaign.dataset.nextplay ? Number(campaign.dataset.nextplay) : 0;
     activateNextAsset(campaign.children[currentAsset]);
     assetTimeout = setTimeout(handleAssetTransition, DURATION, sequence, alottedslots);
   }
