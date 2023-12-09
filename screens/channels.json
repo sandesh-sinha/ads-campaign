@@ -2,7 +2,7 @@
   "channels": [
     {
       "manifestPath": "/content/screens/locations/india/noida.manifest.json",
-      "lastModified": "2023-12-06T13:27:18.000Z",
+      "lastModified": "2023-12-09T14:11:55.129Z",
       "hierarchy": [
         {
           "title": "screens",
@@ -18,12 +18,12 @@
         }
       ],
       "externalId": "/content/screens/locations/india/noida",
-      "title": "Noida",
+      "title": "campaign",
       "liveUrl": "https://main--ads-campaign--sandesh-sinha.hlx.live/content/screens/locations/india/noida.html"
     },
     {
       "manifestPath": "/content/screens/locations/us/sanjose.manifest.json",
-      "lastModified": "2023-12-06T13:27:18.000Z",
+      "lastModified": "2023-12-07T15:49:23.000Z",
       "hierarchy": [
         {
           "title": "screens",
