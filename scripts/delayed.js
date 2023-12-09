@@ -182,6 +182,7 @@ function startCarousel() {
   const sequence = carousels[0];
   currentCampaign = -1;
   handleNextCampaign(sequence);
+  console.log('sequence started');
 }
 
 startCarousel();
