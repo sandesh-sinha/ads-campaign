@@ -1,10 +1,14 @@
 {
   "version": "3.0",
-  "timestamp": 1702134518000,
+  "timestamp": 1702291047973,
   "entries": [
     {
       "path": "/content/screens/locations/us/sanjose.html",
-      "timestamp": 1701784418000
+      "timestamp": 1702291047973
+    },
+    {
+      "path": "/scripts/lib-franklin.js",
+      "timestamp": 1701682199000
     },
     {
       "path": "/scripts/scripts.js",
@@ -20,11 +24,7 @@
     },
     {
       "path": "/scripts/delayed.js",
-      "timestamp": 1702134518000
-    },
-    {
-      "path": "/scripts/lib-franklin.js",
-      "timestamp": 1701682199000
+      "timestamp": 1702290782000
     },
     {
       "path": "scripts/scripts.js",
