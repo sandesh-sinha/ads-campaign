@@ -101,7 +101,7 @@ function handleNextCampaign(sequence) {
     return true;
   });
   if (!campaignRetrieved) {
-    Array.from(sequence.children).splice(0, targetCampaignIndex).every((campaignElem) => {
+    Array.from(sequence.children).splice(0, targetCampaignIndex + 1).every((campaignElem) => {
       if (checkCampaignActivation(campaignElem)) {
         campaignRetrieved = true;
         return false;
@@ -169,7 +169,7 @@ function activateNextCampaign(sequence) {
     campaign.classList.add('active');
     currentAsset = campaign.dataset.nextplay ? Number(campaign.dataset.nextplay) : 0;
     activateNextAsset(campaign.children[currentAsset]);
-    assetTimeout = setTimeout(handleAssetTransition, DURATION, sequence, alottedslots);
+    assetTimeout = setTimeout(handleAssetTransition, DURATION, sequence, alottedslots - 1);
   }
 }
 
