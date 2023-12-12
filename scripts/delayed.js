@@ -101,7 +101,7 @@ function handleNextCampaign(sequence) {
     return true;
   });
   if (!campaignRetrieved) {
-    Array.from(sequence.children).splice(0, currentCampaign).every((campaignElem) => {
+    Array.from(sequence.children).splice(0, currentCampaign + 1).every((campaignElem) => {
       if (checkCampaignActivation(campaignElem)) {
         campaignRetrieved = true;
         return false;
